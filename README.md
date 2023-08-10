@@ -10,3 +10,12 @@ gptai.yaml: 실습용 가상환경을 그대로 제공하였습니다. (Linux)
 pdf: 강의용 교안이 올라와 있는 폴더<br>
 personal: langchain을 이용한 ChatGPT 검색 폴더<br>
 wos_gifted_db: 실습용 Vector DB로, Web of Science에서 검색해 추출한 영재교육 관련 논문 상세서지정보 분석 데이터베이스
+
+# Flask를 이용한 나만의 ChatGPT 기반 서비스 만들기
+
+Flask를 이용하기 위해서는 몇 개의 라이브러리를 설치해야 합니다.
+가상환경을 활성화한 뒤 다음의 명령어를 실행해야 합니다.
+pip install Flask==2.2.3
+pip install Flask-WTF
+pip install Flask-Moment
+pip install python-dotenv
