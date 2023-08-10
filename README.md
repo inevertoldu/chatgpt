@@ -20,6 +20,7 @@ Flask를 이용하기 위해서는 몇 개의 라이브러리를 설치해야 �
 pip install Flask==2.2.3<br>
 pip install Flask-WTF<br>
 pip install Flask-Moment<br>
+pip install flask-cors<br>
 pip install python-dotenv<br>
 
 <H1>Flask의 구조</H1>
