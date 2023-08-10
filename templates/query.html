@@ -22,8 +22,7 @@
 </head>
 <body>
     <div style='margin: 0 auto; overflow: auto; width: 50%;'>
-    <h2>Query for chatGPT</h2>
-    <h4>Model: {{session['model']}}</h4>
+        <h2>Query for chatGPT</h2>
         <p align='center'><b>[사용 안내]</b></p>
         1. 질문을 입력한 뒤 엔터 키를 누르거나 입력 버튼을 누르면 메시지가 서버로 전송됩니다.<br>
         2. 대체로 10초 이내에 응답하지만 명령의 종류에 따라 오래 걸리기도 하며, 1분 30초가 넘을 경우 멈추도록 설정되어 있습니다.<br>
@@ -42,11 +41,6 @@
             <td align='center'>
                 <form action='{{ url_for('clear') }}' method='POST'>
                     <input type='submit' value='화면 지우기(Clear)' style='width: 150px; height: 30px; float:center' />
-                </form>
-            </td>
-            <td align='center'>
-                <form action='{{ url_for('logout') }}' method='POST'>
-                    <input type='submit' value='로그아웃(Logout)' style='width: 150px; height: 30px; float:center' />
                 </form>
             </td>
         </tr>

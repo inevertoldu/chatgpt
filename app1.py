@@ -29,7 +29,7 @@ import os
 import json
 import re
 
-app = Flask(__name__)
+app1 = Flask(__name__)
 
 load_dotenv()
 
@@ -48,12 +48,24 @@ knowledge_model = ChatOpenAI(temperature=0, model_name=MODEL)
 vector_gift = Chroma(persist_directory='wos_gifted_db', embedding_function=embeddings)
 qa_gift = ConversationalRetrievalChain.from_llm(knowledge_model, vector_gift.as_retriever(search_kwargs={"k": 3}), return_source_documents=True)
 
-app.config['SESSION_COOKIE_MAX_SIZE'] = 4800  # 세션의 크기에 대한 문제
-app.config['SECRET_KEY'] = 'your_secret_key_here'  # 보안을 위한 시크릿 키 설정
+app1.config['SESSION_COOKIE_MAX_SIZE'] = 4800  # 세션의 크기에 대한 문제
+app1.config['SECRET_KEY'] = 'your_secret_key_here'  # 보안을 위한 시크릿 키 설정
 
 print('Initialization complete.')
 
 # Basic function
+# 기본 함수: context의 메시지가 최대 길이를 초과했는지 확인하는 코드
+def check_tokens(items):
+    cnt = 0
+
+    if items is None:
+        return cnt
+
+    for item in items:
+        cnt += len(item['content'])
+
+    return cnt
+
 # 기본 함수: QA Model에서의 질의 응답에 대한 History 관리
 def manage_history(lists):    
     tot_size = 0
@@ -92,18 +104,88 @@ def questioning(model, lists, query):
     #lists.append(HumanMessage(content=query, additional_kwargs={}, example=False))
     #lists.append(AIMessage(content=result['answer'], additional_kwargs={'source':refs}, example=False)) 
     
+    print(refs)
+    
     lists.append({'type':'human', 'content':query, 'additional_kwargs':{}, 'example':False})
     lists.append({'type':'ai', 'content':result['answer'], 'additional_kwargs':{'source':refs}, 'example':False})
             
     return lists
 
 
-@app.route('/')
+@app1.route('/')
 def hello():
-    return 'Hello, World!'
+    return 'Hello, Welcome to thePython World!'
 
 
-@app.route('/giftedbase', methods=['GET', 'POST'])
+@app1.route('/clear', methods=['GET', 'POST'])
+def clear():
+    # 세션이 종료된 경우임
+    if session.get('model') is None:
+        print('session is expired.')
+        # 세션 초기화
+        session.pop('id', None)
+        session.pop('model', None)
+        session.pop('code', None)
+        session.pop('context', None)
+
+    return render_template('query.html')
+
+
+@app1.route('/query', methods=['GET', 'POST'])
+def query():
+    if request.method == 'POST':
+        message = request.form['message']
+        context = session.get('context', [])
+
+        if not message:
+            return {}
+        else:
+            print(message)
+
+            # ChatGPT API 호출하기
+            total_cnt = check_tokens(context) + len(message)
+
+            if total_cnt >= MAX_TOKENS:
+                context.clear()
+                print('context cleared.')
+
+            # 메시지 설정하기
+            if len(context) == 0:
+                context.append({"role": "system", "content": "You are a helpful assistant."})
+                context.append({"role": "user", "content": message})
+            else:
+                context.append({"role": "user", "content": message})
+
+            if session.get('model') is None:
+                session['model'] = MODEL
+
+            response = openai.ChatCompletion.create(model=session['model'],
+                                                    messages=context,
+                                                    temperature=TEMPERATURE)
+
+            answer = response['choices'][0]['message']['content']
+            codes = markdown.markdown(answer, extensions=['fenced_code', 'codehilite'])
+
+            print(codes)
+
+            total_cnt = check_tokens(context) + len(answer)
+            print('total tokens:', total_cnt)
+
+            # 대화 목록에 추가
+            context.append({'role': 'assistant', 'content': answer})
+
+            if check_tokens(context) >= MAX_TOKENS:
+                context.clear()
+
+            session['context'] = context
+
+            return {'message': codes}
+    else:
+        # GET인 경우임
+        return render_template('query.html')
+
+
+@app1.route('/giftedbase', methods=['GET', 'POST'])
 def giftedbase():
     if request.method == 'GET':
         sel_lang = request.args.get('lang')
@@ -120,18 +202,13 @@ def giftedbase():
         print(chat_history)
         chat_history = questioning(qa_gift, chat_history, message)
         answer = chat_history[-1]['content']
-        ref = chat_history[-1]['additional_kwargs']['source'] 
-        result = answer + '\n\nReference:\n'
-        for item in ref:
-            result += '\n - '
-            result += item
-        result = markdown.markdown(result, extensions=['md_in_html'])
+        result = markdown.markdown(answer, extensions=['md_in_html'])
         session['gift_history'] = chat_history
         
         return jsonify({'data':result})
 
 
-@app.route('/review', methods=['GET', 'POST'])
+@app1.route('/review', methods=['GET', 'POST'])
 def review():
     if request.method == 'GET':
         sel_lang = request.args.get('lang')
@@ -189,4 +266,4 @@ def review():
 if __name__ == '__main__':
     session['lang'] = 'ko'
     session['gift_history'] = []
-    app.run()
+    app1.run()
