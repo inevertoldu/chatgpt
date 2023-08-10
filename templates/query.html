@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang='ko'>
+<head>
+    <meta charset='UTF-8' />
+    <title>Queries for chatGPT</title>
+    <link rel='stylesheet' href='{{ url_for('static', filename='pygments.css') }}' />
+    <link rel='stylesheet' href='{{ url_for('static', filename='style.css') }}' />
+    <style>
+        .code-container {
+            background-color: #f8f8f8;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+          }
+          
+          .code-header {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+          }
+    </style>
+</head>
+<body>
+    <div style='margin: 0 auto; overflow: auto; width: 50%;'>
+    <h2>Query for chatGPT</h2>
+    <h4>Model: {{session['model']}}</h4>
+        <p align='center'><b>[사용 안내]</b></p>
+        1. 질문을 입력한 뒤 엔터 키를 누르거나 입력 버튼을 누르면 메시지가 서버로 전송됩니다.<br>
+        2. 대체로 10초 이내에 응답하지만 명령의 종류에 따라 오래 걸리기도 하며, 1분 30초가 넘을 경우 멈추도록 설정되어 있습니다.<br>
+        3. 명령을 도중에 멈추고 싶다면 하단에 있는 '화면 지우기'를 누르시기 바랍니다.<br>
+        4. 응답이 없거나 오래 걸리는 경우에는 로그아웃 이후 다시 연결하시기 바랍니다.<br><br>        
+    </div>
+    <div id="chat-window" style='margin: 0 auto; width: 80%'></div>
+    
+    <form id='chat-form' style='text-align: center;'>
+        <input type='text' id='chat-input' value='' placeholder='Ask any question to chatGPT' maxlength='4096' style='width:480px; height:30px'  />
+        <input type='submit' id='chat-btn' value='입력(Send)' style='width: 150px; height: 30px; float:center' />            
+    </form>
+
+    <table style='border:1px; solid black; margin-left:auto; margin-right:auto;'>
+        <tr>
+            <td align='center'>
+                <form action='{{ url_for('clear') }}' method='POST'>
+                    <input type='submit' value='화면 지우기(Clear)' style='width: 150px; height: 30px; float:center' />
+                </form>
+            </td>
+            <td align='center'>
+                <form action='{{ url_for('logout') }}' method='POST'>
+                    <input type='submit' value='로그아웃(Logout)' style='width: 150px; height: 30px; float:center' />
+                </form>
+            </td>
+        </tr>
+    </table>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+// 현재 날짜와 시간을 출력하는 함수
+function getDateTime() {
+  var now = new Date();
+  var year = now.getFullYear();
+  var month = now.getMonth() + 1;
+  var date = now.getDate();
+  var hours = now.getHours();
+  var minutes = now.getMinutes();
+  var seconds = now.getSeconds();
+
+    return year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
+};
+</script>
+<script> 
+$(function() {
+    var chatWindow = $('#chat-window');
+    var chatForm = $('#chat-form');
+    var chatInput = $('#chat-input');
+    var chatBtn = $('#chat-btn');
+    var loadingInterval = null;
+
+    chatForm.submit(function (event) {
+        event.preventDefault();
+        var message = chatInput.val();
+
+        if (message != '') {
+            chatWindow.append('<div style="margin-top: 3px; margin-bottom: 3px"><span class="user-id">{{ session['id'] }} (' + getDateTime() + ')</span><span class="user-message">' + message + '</span></div>');
+            chatInput.val('');
+            
+            $.ajax({
+                url: '/query',
+                type: 'POST',
+                data: { 'message': message },
+                timeout: 90000, // 최대 90초로 설정
+
+                beforeSend: function() {
+                    loadingInterval = setInterval(function() {
+                        chatWindow.append('<div><span style="text-align:center"> [--- 요청을 처리하는 중입니다. 잠시만 기다려 주세요. ---] </span></div>');
+                        chatWindow.scrollTop(chatWindow.prop("scrollHeight"));
+                    }, 10000);
+                    
+                    chatInput.prop('disabled', true);
+                    chatBtn.prop('disabled', true);
+                },
+
+                success: function (response) {
+                    chatWindow.append('<div style="margin-top: 3px; margin-bottom: 3px"><span class="bot-id">' + 'ChatGPT (' + getDateTime() + ')</span><span class="bot-message">' + response.message + '</span></div>');
+                    chatWindow.scrollTop(chatWindow.prop("scrollHeight"));
+                    chatInput.prop('disabled', false);
+                    chatBtn.prop('disabled', false);
+                    chatInput.focus();
+
+                    clearInterval(loadingInterval);
+                },
+
+                complete: function() {
+                    clearInterval(loadingInterval);
+                },
+
+                error: function(xhr, status, error) {
+                    if (status === 'timeout') {
+                        chatWindow.append('<div><span style="background-color:lightgray;text-align:center"> [--- 응답 시간 초과(60초)로 취소하였습니다. ---] </span></div>');
+                        chatWindow.scrollTop(chatWindow.prop("scrollHeight"));
+                    } else {
+                        chatWindow.append('<div><span style="background-color:lightgray;text-align:center">' + status + '가 발생했습니다. 다시 시도해 주세요.</span></div>');
+                        chatWindow.scrollTop(chatWindow.prop("scrollHeight"));                        
+                    }
+                    
+                    chatInput.prop('disabled', false);
+                    chatBtn.prop('disabled', false);
+                    chatInput.focus();
+                    
+                    clearInterval(loadingInterval);
+                }
+            });        
+        }
+    });
+});
+</script>
+
+</body> 
+</html>
