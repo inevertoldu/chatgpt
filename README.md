@@ -17,7 +17,8 @@ wos_gifted_db: 실습용 Vector DB로, Web of Science에서 검색해 추출한 
 
 Flask를 이용하기 위해서는 몇 개의 라이브러리를 설치해야 합니다.
 가상환경을 활성화한 뒤 다음의 명령어를 실행해야 합니다.
-pip install Flask==2.2.3
-pip install Flask-WTF
-pip install Flask-Moment
-pip install python-dotenv
+
+pip install Flask==2.2.3<br>
+pip install Flask-WTF<br>
+pip install Flask-Moment<br>
+pip install python-dotenv<br>
