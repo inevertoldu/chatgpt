@@ -22,3 +22,14 @@ pip install Flask==2.2.3<br>
 pip install Flask-WTF<br>
 pip install Flask-Moment<br>
 pip install python-dotenv<br>
+
+본 레포지토리에는 .env 파일이 없습니다. 메모장이나 텍스트 편집기를 이용해 .env 파일을 만들고 아래의 내용을 추가하도록 합니다.
+
+FLASK_APP=app.py<br>
+FLASK_ENV=development<br>
+OPENAI_API_KEY=your_api_key
+<p></p>
+export FLASK_APP=app.py<br>
+export FLASK_DEBUG=true<br>
+
+
