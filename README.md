@@ -10,8 +10,7 @@ gptai.yaml: 실습용 가상환경을 그대로 제공하였습니다. (Linux)
 pdf: 강의용 교안이 올라와 있는 폴더<br>
 personal: langchain을 이용한 ChatGPT 검색 폴더<br>
 wos_gifted_db: 실습용 Vector DB로, Web of Science에서 검색해 추출한 영재교육 관련 논문 상세서지정보 분석 데이터베이스
-
-
+<p></p>
 
 <H1>Flask를 이용한 나만의 ChatGPT 기반 서비스 만들기</H1> 
 
@@ -30,6 +29,8 @@ FLASK_ENV=development<br>
 OPENAI_API_KEY=your_api_key
 <p></p>
 export FLASK_APP=app.py<br>
-export FLASK_DEBUG=true<br>
+export FLASK_DEBUG=true
+<p></p>
+app.py을 만들고 나면, 명령어 창에서 flask run이라고 입력하면 수행할 수 있습니다.
 
 
