@@ -22,6 +22,17 @@ pip install Flask-WTF<br>
 pip install Flask-Moment<br>
 pip install python-dotenv<br>
 
+<H1>Flask의 구조</H1>
+플라스크는 python을 이용해 웹 서비스를 할 수 있도록 개발된 패키지입니다.<br>
+서버 역할을 수행하는 파일(app.py)과 실제 사용자에게 나타날 여러 파일들의 구조를 띠고 있습니다.
+<p></p>
+[Project Folder] <br>
+\ app.py<br>
+\ .env<br>
+\ [templates]<br>
+\ [static]<br>
+<p>templates 폴더는 HTML이 위치하고 있고, static에는 각종 이미지나 스타일, 자바스크립트 등의 정보를 갖고 있습니다.</p>
+
 본 레포지토리에는 .env 파일이 없습니다. 메모장이나 텍스트 편집기를 이용해 .env 파일을 만들고 아래의 내용을 추가하도록 합니다.
 
 FLASK_APP=app.py<br>
