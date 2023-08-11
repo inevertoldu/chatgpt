@@ -54,7 +54,9 @@ app.py을 만들고 나면, 명령어 창에서 flask run이라고 입력하면 
 <p></p>
 pip install gunicorn<br>
 nohup gunicorn -b 127.0.0.1:5000 app:app &<br>
-(만약 자신이 사용하는 Flask 파일이 app1이라면 app:app 부분을 app1:app1 으로 수정해야 합니다.)
+(만약 자신이 사용하는 Flask 파일이 app1이라면 app:app 부분을 app1:app1 으로 수정해야 합니다.)<br>
+특정 포트에 열려 있는 프로그램을 확인하려면 명령어 창에서 ps aux | grep 5000 을 입력하세요.<br>
+그리고 사용을 중지하고 싶다면 위의 명령어를 실행해서 프로세스 숫자를 확인하고 kill [number]를 입력하세요.
 
 
 
