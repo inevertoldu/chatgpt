@@ -51,6 +51,20 @@ qa_gift = ConversationalRetrievalChain.from_llm(knowledge_model, vector_gift.as_
 app1.config['SESSION_COOKIE_MAX_SIZE'] = 4800  # 세션의 크기에 대한 문제
 app1.config['SECRET_KEY'] = 'your_secret_key_here'  # 보안을 위한 시크릿 키 설정
 
+# 파일 업로드를 위한 클래스임
+class UploadForm(FlaskForm):
+    file = FileField('파일 업로드', validators=[
+        FileRequired(),
+        FileAllowed(['xlsx', 'csv'], '허용되는 파일 형식: xlsx, csv')
+    ])
+
+CORS(app1)  # CORS 설정 추가
+
+moment = Moment(app1)
+
+UPLOAD_FOLDER = './uploads'
+app1.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 print('Initialization complete.')
 
 # Basic function
@@ -114,7 +128,7 @@ def questioning(model, lists, query):
 
 @app1.route('/')
 def hello():
-    return 'Hello, Welcome to thePython World!'
+    return 'Hello, Welcome to the Python World!'
 
 
 @app1.route('/clear', methods=['GET', 'POST'])
@@ -206,6 +220,91 @@ def giftedbase():
         session['gift_history'] = chat_history
         
         return jsonify({'data':result})
+
+
+@app1.route('/upload', methods=['POST', 'GET'])
+def upload_file():
+    form = UploadForm()
+    if request.method == 'POST':
+        print('uploading')
+        file = request.files['file']
+        if file:
+            # 파일을 원하는 위치에 저장하고 분석 작업 수행, 분석 결과를 얻은 뒤 클라이언트에게 전달
+            filename = file.filename
+            ext = os.path.splitext(filename)[1].lower()[1:]
+            
+            if ext != 'csv' and ext != 'xlsx' and ext != 'xls':
+                msg = '데이터프레임 형식의 파일(csv, xlsx)만 업로드해 주세요.'
+                print(msg)
+                return {'result':'error', 'message':msg}
+            
+            if ext == 'xls' or ext == 'xlsx':
+                df = pd.read_excel(file, index_col=0)
+            else:
+                df = pd.read_csv(file, index_col=0)
+            
+            filename = get_unique_filename(filename)
+            joblib.dump(df, os.path.join(app1.config['UPLOAD_FOLDER'], filename + '.pkl'))
+            session['df_name'] = filename
+            
+            # 임시 폴더에 파일 저장하기
+            file.save(os.path.join(app1.config['UPLOAD_FOLDER'], filename))
+            
+            base_text = f"데이터셋의 행:{df.shape[0]}, 데이터셋의 열:{df.shape[1]}<br>데이터의 종류(변수):{' '.join(df.columns.tolist())}"
+              
+            return {'result':'success', 'analysis_result': base_text}
+        else:
+            print('no file at all')
+            return {'result':'error', 'message':'No file at all.'}
+    else:
+        return render_template('upload.html', form=form)
+
+def get_unique_filename(filename):
+    """
+    만약 동일한 이름의 파일이 존재하면, 파일 이름 뒤에 숫자를 붙여서 고유한 이름을 생성합니다.
+    예) file.csv -> file_1.csv, file_2.csv, ...
+    """
+    name, ext = os.path.splitext(filename)
+    
+    print('upload folder:', app1.config['UPLOAD_FOLDER'])
+    
+    counter = 1
+    while os.path.exists(os.path.join(app1.config['UPLOAD_FOLDER'], filename)):
+        filename = f"{name}_{counter}{ext}"
+        counter += 1
+    
+    return filename
+
+
+@app1.route("/ask", methods=["POST"])
+def ask():
+    print('submitted')
+    question = request.form.get('text')
+    print(question)
+    
+    df_name = session.get('df_name', None)
+    print(df_name)
+    
+    if df_name is None:
+        return jsonify({"result": "fail", "answer": "데이터셋이 정상적으로 업로드되지 않았습니다."})
+    else:
+        agent_name = session.get('agent_name', None)
+        if agent_name is None:
+            df = joblib.load(os.path.join(app1.config['UPLOAD_FOLDER'], df_name + '.pkl'))
+            agent = create_pandas_dataframe_agent(ChatOpenAI(temperature=0, model="gpt-3.5-turbo-0613"), df, verbose=True, agent_type=AgentType.OPENAI_FUNCTIONS)
+            agent_name = get_unique_filename("private_agent")
+            joblib.dump(agent, os.path.join(app1.config['UPLOAD_FOLDER'], agent_name + '.pkl'))
+            session['agent_name'] = agent_name
+            print(agent_name)
+        else:
+            print(agent_name)
+            agent = joblib.load(os.path.join(app1.config['UPLOAD_FOLDER'], agent_name +'.pkl'))
+        
+        answer = agent.run(question)
+    
+        print(answer)
+        
+        return jsonify({"result": "success", "answer": answer})
 
 
 @app1.route('/review', methods=['GET', 'POST'])
