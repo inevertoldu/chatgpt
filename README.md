@@ -39,7 +39,8 @@ pip install python-dotenv<br>
 
 FLASK_APP=app.py<br>
 FLASK_ENV=development<br>
-OPENAI_API_KEY=your_api_key
+OPENAI_API_KEY=your_api_key<br>
+UPLOAD_FOLDER = './uploads'
 <p></p>
 export FLASK_APP=app.py<br>
 export FLASK_DEBUG=true
