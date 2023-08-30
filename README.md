@@ -37,7 +37,7 @@ pip install python-dotenv<br>
 
 본 레포지토리에는 .env 파일이 없습니다. 메모장이나 텍스트 편집기를 이용해 .env 파일을 만들고 아래의 내용을 추가하도록 합니다.
 
-FLASK_APP=app.py<br>
+FLASK_APP=app1.py<br>
 FLASK_ENV=development<br>
 OPENAI_API_KEY=your_api_key<br>
 UPLOAD_FOLDER = './uploads'
@@ -46,6 +46,18 @@ export FLASK_APP=app.py<br>
 export FLASK_DEBUG=true
 <p></p>
 app.py을 만들고 나면, 명령어 창에서 flask run이라고 입력하면 수행할 수 있습니다.
+
+<H1>서비스의 기능</H1>
+
+본 소스 코드의 플라스크 서비스는 flask run을 통해 실행한 이후, 엔드포인트(endpoint) 지정을 통해 몇 가지 서비스를 구현할 수 있도록 제공되었습니다.<br>
+예를 들면 http://127.0.0.1:5000/query, http://127.0.0.1:5000/review 등을 통해 여러 기능을 수행할 수 있습니다.<br>
+(공인된 인증서를 가지고 있지 않으므로 https 실행은 되지 않습니다.)<br><br>
+
+1. 일반적인 질의응답(/query): chatgpt 웹사이트에서 하는 것처럼 여러 질문들을 수행할 수 있습니다.<p>
+2. 글쓰기 교정 및 피드백(/review): 작성된 긴 글에 대해 첨삭과 피드백을 제공합니다.<p>
+3. 주어진 데이터베이스에 대한 질의응답(/giftbase): 영재교육과 관련해 사전적으로 수집하여 정의된 과학영재교육과 관련된 국제학술논문 및 자료를 기반으로 질의응답하도록 구성되어 있습니다.<p>
+4. 나만의 데이터셋에 대한 질의응답(/upload): 내가 정리한 엑셀 또는 데이터셋 파일에 대한 질의응답 기능이 있습니다. 현재는 엑셀 또는 csv 포맷만 가능합니다.<p>
+
 
 <H1>최종적으로 배포하기</H1>
 
