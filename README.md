@@ -12,6 +12,10 @@ personal: langchain을 이용한 ChatGPT 검색 폴더<br>
 wos_gifted_db: 실습용 Vector DB로, Web of Science에서 검색해 추출한 영재교육 관련 논문 상세서지정보 분석 데이터베이스
 <p></p>
 
+<H1>이 프로그램을 이용하기 위해서 해야 할 일</H1>
+
+이 프로그램을 이용하려면 먼저 가상환경 설치가 필요합니다. (가상환경 설치하는 법, 그리고 export된 파일을 불러와 설치하기 추가)<br><br>
+
 <H1>Flask를 이용한 나만의 ChatGPT 기반 서비스 만들기</H1> 
 
 Flask를 이용하기 위해서는 몇 개의 라이브러리를 설치해야 합니다.
