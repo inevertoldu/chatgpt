@@ -34,7 +34,7 @@ pip install python-dotenv<br><br>
 <H1>2. ChatGPT 이해하기</H1>
 
 ChatGPT는 거대 언어 모델 중 하나로 OpenAI가 개발했습니다. 이외의 개념을 이해하기 위해서는 아래의 강의자료를 참고하시기 바랍니다.<br>
-[강의자료] (https://github.com/inevertoldu/chatgpt/blob/main/pdf/2023%20chatgpt%20api%201.pdf)
+### [강의자료] (https://github.com/inevertoldu/chatgpt/blob/main/pdf/2023%20chatgpt%20api%201.pdf)
 
 ChatGPT의 프롬프트 사용까지 포함되어 있습니다.
 
