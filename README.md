@@ -7,7 +7,7 @@ pdf: 강의용 교안이 올라와 있는 폴더<br>
 personal: langchain을 이용한 개인용 ChatGPT 검색 폴더<br>
 wos_gifted_db: 실습용 Vector DB로, Web of Science에서 검색해 추출한 영재교육 관련 논문 상세서지정보 분석 데이터베이스
 
-<H1>먼저 해야 할 일</H1>
+<H1>1. 가상환경과 키 발급 받기</H1>
 
 코드를 실행하기 위해서는 우선 가상환경을 설치하도록 해야 합니다.
 
@@ -18,23 +18,29 @@ wos_gifted_db: 실습용 Vector DB로, Web of Science에서 검색해 추출한 
 5) 가상환경을 활성화하기 위해 <b>conda activate nlp</b>와 같이 입력합니다.정상적으로 동작하는지 확인합니다.
 (만약 이미 가상환경이 동일한 이름으로 설치되어 있을 경우, 에러가 발생할 수 있으므로 해당 이름의 가상환경을 먼저 삭제 또는 변경한 뒤에 실행하기 바랍니다.)
 
-본 코드에서는 ChatGPT API를 이용하므로 각자 자신의 API Key를 등록해야 합니다.
-<p></p>
+가상환경을 성공적으로 설치했다면 해당 가상 환경을 활성화하고 다음과 같은 라이브러리를 실행하도록 합니다.
 
-<H1>이 프로그램을 이용하기 위해서 해야 할 일</H1>
-
-이 프로그램을 이용하려면 먼저 가상환경 설치가 필요합니다. (가상환경 설치하는 법, 그리고 export된 파일을 불러와 설치하기 추가)<br><br>
-
-<H1>Flask를 이용한 나만의 ChatGPT 기반 서비스 만들기</H1> 
-
-Flask를 이용하기 위해서는 몇 개의 라이브러리를 설치해야 합니다.
-가상환경을 활성화한 뒤 다음의 명령어를 실행해야 합니다.
-
+conda activate nlp<br>
 pip install Flask==2.2.3<br>
 pip install Flask-WTF<br>
 pip install Flask-Moment<br>
 pip install flask-cors<br>
-pip install python-dotenv<br>
+pip install python-dotenv<br><br>
+
+본 코드에서는 ChatGPT API를 이용하므로 각자 자신의 API Key를 등록해야 합니다.<br>
+다음 링크를 통해서 ChatGPT에서 자신의 API Key를 발급받도록 합니다. ChatGPT의 경우, 사용량에 따라 과금되기 때문에 자신의 Key가 노출되지 않도록 주의해야 합니다.<br>
+설치 참고 URL: https://superhky.tistory.com/508<br>
+
+<H1>2. ChatGPT 이해하기</H1>
+
+ChatGPT는 거대 언어 모델 중 하나로 OpenAI가 개발했습니다. 이외의 개념을 이해하기 위해서는 아래의 강의자료를 참고하시기 바랍니다.<br>
+[강의자료] (https://github.com/inevertoldu/chatgpt/blob/main/pdf/2023%20chatgpt%20api%201.pdf)
+
+ChatGPT의 프롬프트 사용까지 포함되어 있습니다.
+
+<H1></H1>
+
+
 
 <H1>Flask의 구조</H1>
 
