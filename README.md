@@ -1,15 +1,24 @@
 # ChatGPT 및 LLM을 교육 및 연구에 활용하기
-ChatGPT 및 여러 LLM을 API를 이용해 활용하는 방법을 안내하는 예제로 구성되어 있습니다.
 
-nlp.yaml: 실습용 가상환경을 그대로 제공하였습니다. (MacOS)<br>
-gptai.yaml: 실습용 가상환경을 그대로 제공하였습니다. (Linux)
-
-가상환경을 그대로 동일하게 설치하려면 가상환경 파일을 다운로드한 후, command 화면에서 <b>conda env create -f nlp.yaml</b>라고 명령어를 치면 가능합니다.<br>
-(만약 이미 가상환경이 동일한 이름으로 설치되어 있을 경우, 에러가 발생할 수 있으므로 해당 이름의 가상환경을 먼저 삭제 또는 변경한 뒤에 실행하기 바랍니다.)
+ChatGPT 및 여러 LLM을 API를 이용해 활용하는 방법을 안내하는 예제로 구성되어 있습니다.<br>
+Vector DB와 Langchain, Flask 등을 이용해 웹을 통해 관련 서비스를 제공할 수 있도록 구성되어 있습니다.<br>
 
 pdf: 강의용 교안이 올라와 있는 폴더<br>
-personal: langchain을 이용한 ChatGPT 검색 폴더<br>
+personal: langchain을 이용한 개인용 ChatGPT 검색 폴더<br>
 wos_gifted_db: 실습용 Vector DB로, Web of Science에서 검색해 추출한 영재교육 관련 논문 상세서지정보 분석 데이터베이스
+
+<H1>먼저 해야 할 일</H1>
+
+코드를 실행하기 위해서는 우선 가상환경을 설치하도록 해야 합니다.
+
+1) https://www.anaconda.com/download 사이트에 접속해서 자신의 OS 및 컴퓨터의 환경에 맞는 Anaconda 프로그램을 다운로드 받아 설치합니다.
+2) github에 있는 nlp.yaml을 다운로드 받은 뒤, 다운로드 받은 위치에서 명령어 창을 통해 <b>conda env create -f nlp.yaml</b>을 입력합니다.
+3) 터미널 또는 윈도우 명령어 창을 띄운 뒤 <b>conda info --env</b> (다음 명령어는 설치된 가상환경이 무엇이 있는지 확인하기 위한 명령어입니다.)를 입력해 nlp라는 이름의 가상환경이 있는지 확인합니다.
+4) 새로운 가상환경을 설치하고 싶다면 <b>conda create -n {이름}</b>과 같이 입력합니다.
+5) 가상환경을 활성화하기 위해 <b>conda activate nlp</p>와 같이 입력합니다.정상적으로 동작하는지 확인합니다.
+(만약 이미 가상환경이 동일한 이름으로 설치되어 있을 경우, 에러가 발생할 수 있으므로 해당 이름의 가상환경을 먼저 삭제 또는 변경한 뒤에 실행하기 바랍니다.)
+
+본 코드에서는 ChatGPT API를 이용하므로 각자 자신의 API Key를 등록해야 합니다.
 <p></p>
 
 <H1>이 프로그램을 이용하기 위해서 해야 할 일</H1>
