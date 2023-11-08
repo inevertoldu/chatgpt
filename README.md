@@ -93,7 +93,7 @@ FLASK_ENV=development<br>
 OPENAI_API_KEY=your_api_key<br>
 UPLOAD_FOLDER = './uploads'
 <p></p>
-export FLASK_APP=app.py<br>
+export FLASK_APP=app1.py<br>
 export FLASK_DEBUG=true
 <p></p>
 app.py을 만들고 나면, 명령어 창에서 flask run이라고 입력하면 수행할 수 있습니다.<br><br>
