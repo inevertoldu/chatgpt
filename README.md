@@ -16,7 +16,7 @@ wos_gifted_db: 실습용 Vector DB로, Web of Science에서 검색해 추출한 
 
 1) https://www.anaconda.com/download 사이트에 접속해서 자신의 OS 및 컴퓨터의 환경에 맞는 Anaconda 프로그램을 다운로드 받아 설치합니다.
 2) 터미널 또는 윈도우 명령어 창을 띄운 뒤 <b>conda info --env</b> (다음 명령어는 설치된 가상환경이 무엇이 있는지 확인하기 위한 명령어입니다.)를 입력해 nlp라는 이름의 가상환경이 있는지 확인합니다.
-3) 새로운 가상환경을 설치하기 위해 <b>conda create -n {이름}</b>과 같이 입력합니다. 여기에서는 conda create -n nlp python=3.10으로 입력합니다.
+3) 새로운 가상환경을 설치하기 위해 <b>conda create -n {이름}</b>과 같이 입력합니다. 여기에서는 <b>conda create -n nlp python=3.10</b>으로 입력합니다.
 4) 가상환경을 활성화하기 위해 <b>conda activate nlp</b>와 같이 입력합니다.정상적으로 동작하는지 확인합니다 (만약 이미 가상환경이 동일한 이름으로 설치되어 있을 경우, 에러가 발생할 수 있으므로 해당 이름의 가상환경을 먼저 삭제 또는 변경한 뒤에 실행하기 바랍니다).
 5) 깃허브에 있는 파일을 모두 다운로드 받아 zip 파일을 해제합니다.
 6) 해당 폴더로 이동한 뒤 모든 필요한 패키지를 설치합니다 <b>pip install -r requirements.txt</b>라는 명령어를 입력하도록 합니다.
