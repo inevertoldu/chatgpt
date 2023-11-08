@@ -20,16 +20,16 @@ from langchain.schema import AIMessage, HumanMessage
 from dotenv import load_dotenv
 from nltk.tokenize import word_tokenize
 
-import nltk
 import joblib
 import pandas as pd
 import openai
 import markdown
+import nltk
 import os
 import json
 import re
 
-app1 = Flask(__name__)
+app = Flask(__name__)
 
 load_dotenv()
 
@@ -48,8 +48,8 @@ knowledge_model = ChatOpenAI(temperature=0, model_name=MODEL)
 vector_gift = Chroma(persist_directory='wos_gifted_db', embedding_function=embeddings)
 qa_gift = ConversationalRetrievalChain.from_llm(knowledge_model, vector_gift.as_retriever(search_kwargs={"k": 3}), return_source_documents=True)
 
-app1.config['SESSION_COOKIE_MAX_SIZE'] = 4800  # 세션의 크기에 대한 문제
-app1.config['SECRET_KEY'] = 'your_secret_key_here'  # 보안을 위한 시크릿 키 설정
+app.config['SESSION_COOKIE_MAX_SIZE'] = 4800  # 세션의 크기에 대한 문제
+app.config['SECRET_KEY'] = 'your_secret_key_here'  # 보안을 위한 시크릿 키 설정
 
 # 파일 업로드를 위한 클래스임
 class UploadForm(FlaskForm):
@@ -58,12 +58,12 @@ class UploadForm(FlaskForm):
         FileAllowed(['xlsx', 'csv'], '허용되는 파일 형식: xlsx, csv')
     ])
 
-CORS(app1)  # CORS 설정 추가
+CORS(app)  # CORS 설정 추가
 
-moment = Moment(app1)
+moment = Moment(app)
 
 UPLOAD_FOLDER = './uploads'
-app1.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 print('Initialization complete.')
 
@@ -126,12 +126,12 @@ def questioning(model, lists, query):
     return lists
 
 
-@app1.route('/')
+@app.route('/')
 def hello():
     return 'Hello, Welcome to the Python World!'
 
 
-@app1.route('/clear', methods=['GET', 'POST'])
+@app.route('/clear', methods=['GET', 'POST'])
 def clear():
     # 세션이 종료된 경우임
     if session.get('model') is None:
@@ -145,7 +145,7 @@ def clear():
     return render_template('query.html')
 
 
-@app1.route('/query', methods=['GET', 'POST'])
+@app.route('/query', methods=['GET', 'POST'])
 def query():
     if request.method == 'POST':
         message = request.form['message']
@@ -199,7 +199,7 @@ def query():
         return render_template('query.html')
 
 
-@app1.route('/giftedbase', methods=['GET', 'POST'])
+@app.route('/giftedbase', methods=['GET', 'POST'])
 def giftedbase():
     if request.method == 'GET':
         sel_lang = request.args.get('lang')
@@ -222,7 +222,7 @@ def giftedbase():
         return jsonify({'data':result})
 
 
-@app1.route('/upload', methods=['POST', 'GET'])
+@app.route('/upload', methods=['POST', 'GET'])
 def upload_file():
     form = UploadForm()
     if request.method == 'POST':
@@ -244,11 +244,11 @@ def upload_file():
                 df = pd.read_csv(file, index_col=0)
             
             filename = get_unique_filename(filename)
-            joblib.dump(df, os.path.join(app1.config['UPLOAD_FOLDER'], filename + '.pkl'))
+            joblib.dump(df, os.path.join(app.config['UPLOAD_FOLDER'], filename + '.pkl'))
             session['df_name'] = filename
             
             # 임시 폴더에 파일 저장하기
-            file.save(os.path.join(app1.config['UPLOAD_FOLDER'], filename))
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             
             base_text = f"데이터셋의 행:{df.shape[0]}, 데이터셋의 열:{df.shape[1]}<br>데이터의 종류(변수):{' '.join(df.columns.tolist())}"
               
@@ -266,17 +266,17 @@ def get_unique_filename(filename):
     """
     name, ext = os.path.splitext(filename)
     
-    print('upload folder:', app1.config['UPLOAD_FOLDER'])
+    print('upload folder:', app.config['UPLOAD_FOLDER'])
     
     counter = 1
-    while os.path.exists(os.path.join(app1.config['UPLOAD_FOLDER'], filename)):
+    while os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], filename)):
         filename = f"{name}_{counter}{ext}"
         counter += 1
     
     return filename
 
 
-@app1.route("/ask", methods=["POST"])
+@app.route("/ask", methods=["POST"])
 def ask():
     print('submitted')
     question = request.form.get('text')
@@ -290,15 +290,15 @@ def ask():
     else:
         agent_name = session.get('agent_name', None)
         if agent_name is None:
-            df = joblib.load(os.path.join(app1.config['UPLOAD_FOLDER'], df_name + '.pkl'))
+            df = joblib.load(os.path.join(app.config['UPLOAD_FOLDER'], df_name + '.pkl'))
             agent = create_pandas_dataframe_agent(ChatOpenAI(temperature=0, model="gpt-3.5-turbo"), df, verbose=True, agent_type=AgentType.OPENAI_FUNCTIONS)
             agent_name = get_unique_filename("private_agent")
-            joblib.dump(agent, os.path.join(app1.config['UPLOAD_FOLDER'], agent_name + '.pkl'))
+            joblib.dump(agent, os.path.join(app.config['UPLOAD_FOLDER'], agent_name + '.pkl'))
             session['agent_name'] = agent_name
             print(agent_name)
         else:
             print(agent_name)
-            agent = joblib.load(os.path.join(app1.config['UPLOAD_FOLDER'], agent_name +'.pkl'))
+            agent = joblib.load(os.path.join(app.config['UPLOAD_FOLDER'], agent_name +'.pkl'))
         
         answer = agent.run(question)
     
@@ -307,7 +307,7 @@ def ask():
         return jsonify({"result": "success", "answer": answer})
 
 
-@app1.route('/review', methods=['GET', 'POST'])
+@app.route('/review', methods=['GET', 'POST'])
 def review():
     if request.method == 'GET':
         sel_lang = request.args.get('lang')
@@ -365,4 +365,4 @@ def review():
 if __name__ == '__main__':
     session['lang'] = 'ko'
     session['gift_history'] = []
-    app1.run()
+    app.run()
