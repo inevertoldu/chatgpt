@@ -7,7 +7,7 @@ pdf: 강의용 교안이 올라와 있는 폴더<br>
 personal: langchain을 이용한 개인용 ChatGPT 검색 폴더<br>
 wos_gifted_db: 실습용 Vector DB로, Web of Science에서 검색해 추출한 영재교육 관련 논문 상세서지정보 분석 데이터베이스
 
-파일을 다운로드 받고 싶다면 git clone https://github.com/inevertoldu/chatgpt.git 명령어를 실행하면 가능합니다.
+파일을 다운로드 받고 싶다면 git clone https://github.com/inevertoldu/chatgpt.git 명령어를 실행하면 가능합니다.<br>
 깃 설치 방법은 다음 URL을 참고하세요.https://git-scm.com/book/ko/v2/%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-Git-%EC%84%A4%EC%B9%98
 
 <H1>1. 가상환경과 키 발급 받기</H1>
@@ -88,12 +88,12 @@ https://blog.naver.com/hn03055/222798594287<br>
 
 본 레포지토리에는 .env 파일이 없습니다. 메모장이나 텍스트 편집기를 이용해 .env 파일을 만들고 아래의 내용을 추가하도록 합니다.
 
-FLASK_APP=app1.py<br>
+FLASK_APP=app.py<br>
 FLASK_ENV=development<br>
-OPENAI_API_KEY=your_api_key<br>
+OPENAI_API_KEY=your_api_key(따옴표 없이 입력)<br>
 UPLOAD_FOLDER = './uploads'
 <p></p>
-export FLASK_APP=app1.py<br>
+export FLASK_APP=app.py<br>
 export FLASK_DEBUG=true
 <p></p>
 app.py을 만들고 나면, 명령어 창에서 flask run이라고 입력하면 수행할 수 있습니다.<br><br>
@@ -102,9 +102,9 @@ app.py을 만들고 나면, 명령어 창에서 flask run이라고 입력하면 
 예를 들면 http://127.0.0.1:5000/query, http://127.0.0.1:5000/review 등을 통해 여러 기능을 수행할 수 있습니다.<br>
 (공인된 인증서를 가지고 있지 않으므로 https 실행은 되지 않습니다.)<br><br>
 
-(1) 일반적인 질의응답(/query): chatgpt 웹사이트에서 하는 것처럼 여러 질문들을 수행할 수 있습니다.
-(2) 글쓰기 교정 및 피드백(/review): 작성된 긴 글에 대해 첨삭과 피드백을 제공합니다.
-(3) 주어진 데이터베이스에 대한 질의응답(/giftedbase): 영재교육과 관련해 사전적으로 수집하여 정의된 과학영재교육과 관련된 국제학술논문 및 자료를 기반으로 질의응답하도록 구성되어 있습니다.
+(1) 일반적인 질의응답(/query): chatgpt 웹사이트에서 하는 것처럼 여러 질문들을 수행할 수 있습니다.<br>
+(2) 글쓰기 교정 및 피드백(/review): 작성된 긴 글에 대해 첨삭과 피드백을 제공합니다.<br>
+(3) 주어진 데이터베이스에 대한 질의응답(/giftedbase): 영재교육과 관련해 사전적으로 수집하여 정의된 과학영재교육과 관련된 국제학술논문 및 자료를 기반으로 질의응답하도록 구성되어 있습니다.<br>
 (4) 나만의 데이터셋에 대한 질의응답(/upload): 내가 정리한 엑셀 또는 데이터셋 파일에 대한 질의응답 기능이 있습니다. 현재는 엑셀 또는 csv 포맷만 가능합니다.<p>
 
 <H1>7. 최종적으로 배포하기</H1>
