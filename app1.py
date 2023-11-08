@@ -35,7 +35,7 @@ load_dotenv()
 
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 openai.api_key = OPENAI_API_KEY
-MODEL = 'gpt-3.5-turbo-0613'
+MODEL = 'gpt-3.5-turbo'
 TEMPERATURE = 0.0
 MAX_TOKENS = 4096  # GPT-3.5의 최대 토큰 길이임(입력, 출력 동일함)
 
@@ -291,7 +291,7 @@ def ask():
         agent_name = session.get('agent_name', None)
         if agent_name is None:
             df = joblib.load(os.path.join(app1.config['UPLOAD_FOLDER'], df_name + '.pkl'))
-            agent = create_pandas_dataframe_agent(ChatOpenAI(temperature=0, model="gpt-3.5-turbo-0613"), df, verbose=True, agent_type=AgentType.OPENAI_FUNCTIONS)
+            agent = create_pandas_dataframe_agent(ChatOpenAI(temperature=0, model="gpt-3.5-turbo"), df, verbose=True, agent_type=AgentType.OPENAI_FUNCTIONS)
             agent_name = get_unique_filename("private_agent")
             joblib.dump(agent, os.path.join(app1.config['UPLOAD_FOLDER'], agent_name + '.pkl'))
             session['agent_name'] = agent_name
