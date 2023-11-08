@@ -18,14 +18,22 @@ wos_gifted_db: 실습용 Vector DB로, Web of Science에서 검색해 추출한 
 5) 가상환경을 활성화하기 위해 <b>conda activate nlp</b>와 같이 입력합니다.정상적으로 동작하는지 확인합니다.
 (만약 이미 가상환경이 동일한 이름으로 설치되어 있을 경우, 에러가 발생할 수 있으므로 해당 이름의 가상환경을 먼저 삭제 또는 변경한 뒤에 실행하기 바랍니다.)
 
-가상환경을 성공적으로 설치했다면 해당 가상 환경을 활성화하고 다음과 같은 라이브러리를 실행하도록 합니다.
+만약 위의 방식이 제대로 동작하지 않는다면 다음과 같이 실행할 수 있습니다.
 
-conda activate nlp<br>
+1) 터미널 또는 윈도우 명령어 창에서 <b>conda create -n nlp python=3.10</b>을 입력합니다.
+2) 가상환경을 다음과 같이 활성화합니다 <b>conda activate nlp</b>.
+3) 깃허브에 있는 파일을 모두 다운로드 받아 zip 파일을 해제합니다.
+4) 해당 폴더로 이동한 뒤 모든 필요한 패키지를 설치합니다 <b>pip install -r requirements.txt</b>.
+   
+본 파일을 실행하려면 최소한 아래의 명령어는 실행해야 합니다.
+
 pip install Flask==2.2.3<br>
 pip install Flask-WTF<br>
 pip install Flask-Moment<br>
 pip install flask-cors<br>
+pip install langchain==0.0.251<br>
 pip install python-dotenv<br><br>
+
 
 본 코드에서는 ChatGPT API를 이용하므로 각자 자신의 API Key를 등록해야 합니다.<br>
 다음 링크를 통해서 ChatGPT에서 자신의 API Key를 발급받도록 합니다. ChatGPT의 경우, 사용량에 따라 과금되기 때문에 자신의 Key가 노출되지 않도록 주의해야 합니다.<br>
