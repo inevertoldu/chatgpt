@@ -7,6 +7,9 @@ pdf: 강의용 교안이 올라와 있는 폴더<br>
 personal: langchain을 이용한 개인용 ChatGPT 검색 폴더<br>
 wos_gifted_db: 실습용 Vector DB로, Web of Science에서 검색해 추출한 영재교육 관련 논문 상세서지정보 분석 데이터베이스
 
+파일을 다운로드 받고 싶다면 git clone https://github.com/inevertoldu/chatgpt.git 명령어를 실행하면 가능합니다.
+깃 설치 방법은 다음 URL을 참고하세요.https://git-scm.com/book/ko/v2/%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-Git-%EC%84%A4%EC%B9%98
+
 <H1>1. 가상환경과 키 발급 받기</H1>
 
 코드를 실행하기 위해서는 우선 가상환경을 설치하도록 해야 합니다.
