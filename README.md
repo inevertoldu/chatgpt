@@ -7,33 +7,29 @@ pdf: 강의용 교안이 올라와 있는 폴더<br>
 personal: langchain을 이용한 개인용 ChatGPT 검색 폴더<br>
 wos_gifted_db: 실습용 Vector DB로, Web of Science에서 검색해 추출한 영재교육 관련 논문 상세서지정보 분석 데이터베이스
 
+파일을 다운로드 받고 싶다면 git clone https://github.com/inevertoldu/chatgpt.git 명령어를 실행하면 가능합니다.<br>
+깃 설치 방법은 다음 URL을 참고하세요.https://git-scm.com/book/ko/v2/%EC%8B%9C%EC%9E%91%ED%95%98%EA%B8%B0-Git-%EC%84%A4%EC%B9%98
+
 <H1>1. 가상환경과 키 발급 받기</H1>
 
 코드를 실행하기 위해서는 우선 가상환경을 설치하도록 해야 합니다.
 
 1) https://www.anaconda.com/download 사이트에 접속해서 자신의 OS 및 컴퓨터의 환경에 맞는 Anaconda 프로그램을 다운로드 받아 설치합니다.
-2) github의 레포지토리에 있는 nlp.yaml을 다운로드 받은 뒤, 다운로드 받은 위치에서 명령어 창을 통해 <b>conda env create -f nlp.yaml</b>을 입력합니다.
-3) 터미널 또는 윈도우 명령어 창을 띄운 뒤 <b>conda info --env</b> (다음 명령어는 설치된 가상환경이 무엇이 있는지 확인하기 위한 명령어입니다.)를 입력해 nlp라는 이름의 가상환경이 있는지 확인합니다.
-4) 새로운 가상환경을 설치하고 싶다면 <b>conda create -n {이름}</b>과 같이 입력합니다.
-5) 가상환경을 활성화하기 위해 <b>conda activate nlp</b>와 같이 입력합니다.정상적으로 동작하는지 확인합니다.
-(만약 이미 가상환경이 동일한 이름으로 설치되어 있을 경우, 에러가 발생할 수 있으므로 해당 이름의 가상환경을 먼저 삭제 또는 변경한 뒤에 실행하기 바랍니다.)
-
-만약 위의 방식이 제대로 동작하지 않는다면 다음과 같이 실행할 수 있습니다.
-
-1) 터미널 또는 윈도우 명령어 창에서 <b>conda create -n nlp python=3.10</b>을 입력합니다.
-2) 가상환경을 다음과 같이 활성화합니다 <b>conda activate nlp</b>.
-3) 깃허브에 있는 파일을 모두 다운로드 받아 zip 파일을 해제합니다.
-4) 해당 폴더로 이동한 뒤 모든 필요한 패키지를 설치합니다 <b>pip install -r requirements.txt</b>.
+2) 터미널 또는 윈도우 명령어 창을 띄운 뒤 <b>conda info --env</b> (다음 명령어는 설치된 가상환경이 무엇이 있는지 확인하기 위한 명령어입니다.)를 입력해 nlp라는 이름의 가상환경이 있는지 확인합니다.
+3) 새로운 가상환경을 설치하기 위해 <b>conda create -n {이름}</b>과 같이 입력합니다. 여기에서는 <b>conda create -n nlp python=3.10</b>으로 입력합니다.
+4) 가상환경을 활성화하기 위해 <b>conda activate nlp</b>와 같이 입력합니다.정상적으로 동작하는지 확인합니다 (만약 이미 가상환경이 동일한 이름으로 설치되어 있을 경우, 에러가 발생할 수 있으므로 해당 이름의 가상환경을 먼저 삭제 또는 변경한 뒤에 실행하기 바랍니다).
+5) 깃허브에 있는 파일을 모두 다운로드 받아 zip 파일을 해제합니다.
+6) 해당 폴더로 이동한 뒤 모든 필요한 패키지를 설치합니다 <b>pip install -r requirements.txt</b>라는 명령어를 입력하도록 합니다.
    
-본 파일을 실행하려면 최소한 아래의 명령어는 실행해야 합니다.
+위의 명령어 수행 시 아무런 에러가 나지 않으면 아래의 코드(pip install)는 필요없습니다.
 
+본 파일을 실행하려면 최소한 아래의 명령어는 실행해야 합니다.
 pip install Flask==2.2.3<br>
 pip install Flask-WTF<br>
 pip install Flask-Moment<br>
 pip install flask-cors<br>
 pip install langchain==0.0.251<br>
 pip install python-dotenv<br><br>
-
 
 본 코드에서는 ChatGPT API를 이용하므로 각자 자신의 API Key를 등록해야 합니다.<br>
 다음 링크를 통해서 ChatGPT에서 자신의 API Key를 발급받도록 합니다. ChatGPT의 경우, 사용량에 따라 과금되기 때문에 자신의 Key가 노출되지 않도록 주의해야 합니다.<br>
@@ -83,25 +79,26 @@ https://blog.naver.com/hn03055/222798594287<br>
 \- <b>[static]</b><br>
 <p>templates 폴더는 HTML이 위치하고 있고, static에는 각종 이미지나 스타일, 자바스크립트 등의 정보를 갖고 있습니다.</p>
 
-본 레포지토리에는 .env 파일이 없습니다. 메모장이나 텍스트 편집기를 이용해 .env 파일을 만들고 아래의 내용을 추가하도록 합니다.
+본 레포지토리에는 .env 파일이 없습니다. 메모장이나 텍스트 편집기를 이용해 .env 파일을 만들고 아래의 내용을 추가하도록 합니다.<br>
+본 파일을 다운로드 받은 해당 폴더에 두어야 합니다.
 
-FLASK_APP=app1.py<br>
+FLASK_APP=app.py<br>
 FLASK_ENV=development<br>
-OPENAI_API_KEY=your_api_key<br>
+OPENAI_API_KEY=your_api_key(따옴표 없이 입력)<br>
 UPLOAD_FOLDER = './uploads'
 <p></p>
 export FLASK_APP=app.py<br>
 export FLASK_DEBUG=true
 <p></p>
-app.py을 만들고 나면, 명령어 창에서 flask run이라고 입력하면 수행할 수 있습니다.<br><br>
+app.py을 만들고 나면, 명령어 창에서 <b>flask run</b>이라고 입력하면 수행할 수 있습니다.<br><br>
 
 본 소스 코드의 플라스크 서비스는 flask run을 통해 실행한 이후, 엔드포인트(endpoint) 지정을 통해 몇 가지 서비스를 구현할 수 있도록 제공되었습니다.<br>
 예를 들면 http://127.0.0.1:5000/query, http://127.0.0.1:5000/review 등을 통해 여러 기능을 수행할 수 있습니다.<br>
 (공인된 인증서를 가지고 있지 않으므로 https 실행은 되지 않습니다.)<br><br>
 
-(1) 일반적인 질의응답(/query): chatgpt 웹사이트에서 하는 것처럼 여러 질문들을 수행할 수 있습니다.
-(2) 글쓰기 교정 및 피드백(/review): 작성된 긴 글에 대해 첨삭과 피드백을 제공합니다.
-(3) 주어진 데이터베이스에 대한 질의응답(/giftedbase): 영재교육과 관련해 사전적으로 수집하여 정의된 과학영재교육과 관련된 국제학술논문 및 자료를 기반으로 질의응답하도록 구성되어 있습니다.
+(1) 일반적인 질의응답(/query): chatgpt 웹사이트에서 하는 것처럼 여러 질문들을 수행할 수 있습니다.<br>
+(2) 글쓰기 교정 및 피드백(/review): 작성된 긴 글에 대해 첨삭과 피드백을 제공합니다.<br>
+(3) 주어진 데이터베이스에 대한 질의응답(/giftedbase): 영재교육과 관련해 사전적으로 수집하여 정의된 과학영재교육과 관련된 국제학술논문 및 자료를 기반으로 질의응답하도록 구성되어 있습니다.<br>
 (4) 나만의 데이터셋에 대한 질의응답(/upload): 내가 정리한 엑셀 또는 데이터셋 파일에 대한 질의응답 기능이 있습니다. 현재는 엑셀 또는 csv 포맷만 가능합니다.<p>
 
 <H1>7. 최종적으로 배포하기</H1>
